@@ -1,7 +1,6 @@
 import debug from "debug";
 import shortId from "shortid";
-import { CreateAcronymDto } from "../dto/create.acronym.dto";
-import { PutAcronymDto } from "../dto/put.acronym.dto";
+import { AcronymDto } from "../dto/acronym";
 import MongooseService from "../../common/services/mongoose.service";
 import mongooseFuzzySearching, {
   MongooseFuzzyModel,
@@ -32,7 +31,7 @@ class AcronymDao {
     this.schemaPlugin
   ) as MongooseFuzzyModel<IAcronym>;
 
-  async createAcronym(acronymDetails: CreateAcronymDto) {
+  async createAcronym(acronymDetails: AcronymDto) {
     const acronymId = shortId.generate();
     const res = new this.Acronym({
       _id: acronymId,
@@ -53,22 +52,19 @@ class AcronymDao {
       .exec();
   }
 
-  async getAnAcronym(acronym: string) {
+  getAnAcronym(acronym: string) {
     return this.Acronym.findOne({ acronym: acronym }).exec();
   }
-  async putAnAcronym(acronym: string, acronymDetails: PutAcronymDto) {
-    const res = this.Acronym.findOneAndUpdate(
+   putAnAcronym(acronym: string, acronymDetails: AcronymDto) {
+    return this.Acronym.findOneAndUpdate(
       { acronym: acronym },
       { $set: acronymDetails },
       { new: true }
     ).exec();
-
-    return res;
   }
 
-  async removeAnAcronym(acronym: string) {
-    const res = this.Acronym.findOneAndDelete({ acronym: acronym }).exec();
-    return res;
+  removeAnAcronym(acronym: string) {
+   return this.Acronym.findOneAndDelete({ acronym: acronym }).exec();
   }
 }
 
