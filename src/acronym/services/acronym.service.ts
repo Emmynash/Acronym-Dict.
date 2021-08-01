@@ -1,10 +1,9 @@
-import { PutAcronymDto } from "../dto/put.acronym.dto";
-import { CreateAcronymDto } from "../dto/create.acronym.dto";
+import { AcronymDto } from "../dto/acronym";
 import AcronymDao from "../dao/acronym.dao";
 import { CRUD } from "../../common/interfaces/crud.interface";
 
 class AcronymService implements CRUD {
-  async create(resource: CreateAcronymDto) {
+  async create(resource: AcronymDto) {
     return AcronymDao.createAcronym(resource);
   }
   async list(from: any, limit: any, search: any) {
@@ -15,7 +14,7 @@ class AcronymService implements CRUD {
     return AcronymDao.getAnAcronym(acronym);
   }
 
-  async putAnAcronym(acronym: string, resource: PutAcronymDto) {
+  async putAnAcronym(acronym: string, resource: AcronymDto) {
     return AcronymDao.putAnAcronym(acronym, resource);
   }
   async removeAnAcronym(acronym: string) {
