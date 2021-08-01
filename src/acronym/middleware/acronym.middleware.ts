@@ -1,21 +1,24 @@
 import express from "express";
+import { body } from "express-validator";
 import AcronymService from "../services/acronym.service";
-import debug from "debug";
-
-const log: debug.IDebugger = debug("App-Acronym-Middleware");
 
 class AcronymMiddleware {
-  async validateRequiredBodyFields(
+  async validateBodyFields(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    if (req.body.acronym && req.body.definition) {
+    if (
+      req.body.acronym &&
+      req.body.definition &&
+      body(req.body.acronym).isString() &&
+      body(req.body.definition).isString() 
+    ) {
       return next();
     } else {
       return res
         .status(400)
-        .send({ error: "Acronym and definition are required" });
+        .send({ error: "Acronym and definition are required strings" });
     }
   }
   async validateAcronymExist(
