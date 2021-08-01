@@ -21,14 +21,15 @@ class MongooseService {
   }
 
   connectWithRetry = async () => {
-    let dbUrl;
-    if (process.env.NODE_ENV === "development") {
-      dbUrl = process.env.MONGO_LOCAL_URI;
-    } else if (process.env.NODE_ENV === "production") {
-      dbUrl = process.env.MONGO_DOCKER_URI;
-    }
+    let dbUrl: any = process.env.MONGO_DOCKER_URI;
+    // if (process.env.NODE_ENV === "development") {
+    //   dbUrl = process.env.MONGO_LOCAL_URI;
+    // } else if (process.env.NODE_ENV === "production") {
+    //   dbUrl = process.env.MONGO_DOCKER_URI;
+    // }
     log("Attempting MongoDB connection (will retry if needed)");
     mongoose.Promise = global.Promise;
+    console.log(dbUrl)
     await mongoose
       .connect(dbUrl, this.mongooseOption)
       .then(() => {
