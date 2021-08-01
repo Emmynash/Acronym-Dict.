@@ -1,8 +1,4 @@
-import dotenv from "dotenv";
-const dotEnvResult = dotenv.config();
-if (dotEnvResult.error) {
-  throw dotEnvResult.error;
-}
+import "dotenv/config";
 import express from "express";
 import * as http from "http";
 import * as winston from "winston";
