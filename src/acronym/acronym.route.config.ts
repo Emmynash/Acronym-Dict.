@@ -1,9 +1,7 @@
 import express from "express";
-import { body } from "express-validator";
 import AcronymMiddleware from "./middleware/acronym.middleware";
 import AcronymController from "./controllers/acronym.controller";
 import JwtMiddleware from "../auth/middleware/jwt.middleware";
-import AuthController from "../auth/controller/auth.controller";
 import { CommonRouteConfig } from "../common/common.route.config";
 
 export class AcronymRoutes extends CommonRouteConfig {
@@ -16,9 +14,7 @@ export class AcronymRoutes extends CommonRouteConfig {
       .route("/acronym")
       .get(AcronymController.listAllAcronyms)
       .post(
-        body("acronym").isString(),
-        body("definition").isString(),
-        AcronymMiddleware.validateRequiredBodyFields,
+        AcronymMiddleware.validateBodyFields,
         AcronymMiddleware.validateAcronymDoNotExist,
         AcronymController.createAcronym
       );
@@ -32,9 +28,7 @@ export class AcronymRoutes extends CommonRouteConfig {
     this.app
       .route("/acronym/:acronym")
       .put(
-        body("acronym").isString(),
-        body("definition").isString(),
-        AcronymMiddleware.validateRequiredBodyFields,
+        AcronymMiddleware.validateBodyFields,
         AcronymController.putAcronym
       );
     this.app.route("/acronym/:acronym").delete(AcronymController.removeAcronym);
