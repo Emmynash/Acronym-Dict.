@@ -21,20 +21,13 @@ class AcronymController {
 
   async createAcronym(req: express.Request, res: express.Response) {
     try {
-      const refreshId = req.body.acronym + jwtSecret;
-      const salt = crypto.createSecretKey(crypto.randomBytes(16));
-      const hash = crypto
-        .createHmac("sha512", salt)
-        .update(refreshId)
-        .digest("base64");
-      req.body.refreshKey = salt.export;
       const token = jwt.sign(req.body, jwtSecret, {
         expiresIn: tokenExpirationInSeconds,
       });
       const acronym = await AcronymService.create(req.body);
       res
         .status(201)
-        .send({ acronym: acronym, accessToken: token, refreshToken: hash });
+        .send({ acronym: acronym, accessToken: token});
     } catch (error) {
       log("jwt error %0", error);
       res.status(500).send();
