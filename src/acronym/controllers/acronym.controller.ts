@@ -1,7 +1,6 @@
 import express from "express";
 import debug from "debug";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
 import AcronymService from "../services/acronym.service";
 
 const log: debug.IDebugger = debug("App:Acronym-Service");
@@ -12,8 +11,8 @@ const tokenExpirationInSeconds = 3600;
 class AcronymController {
   async listAllAcronyms(req: express.Request, res: express.Response) {
     const acronyms = await AcronymService.list(
-      req.query.from,
-      req.query.limit,
+      req.query.from || 0,
+      req.query.limit || 100,
       req.query.search
     );
     res.status(200).send(acronyms);
@@ -25,9 +24,7 @@ class AcronymController {
         expiresIn: tokenExpirationInSeconds,
       });
       const acronym = await AcronymService.create(req.body);
-      res
-        .status(201)
-        .send({ acronym: acronym, accessToken: token});
+      res.status(201).send({ acronym: acronym, accessToken: token });
     } catch (error) {
       log("jwt error %0", error);
       res.status(500).send();
