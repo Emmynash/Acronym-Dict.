@@ -6,6 +6,7 @@ import mongooseFuzzySearching, {
   MongooseFuzzyModel,
 } from "mongoose-fuzzy-searching";
 import { IAcronym } from "../../common/interfaces/acronym.interface";
+import { acronym } from "../../../seed/data/01-acronym/acronym";
 
 const log: debug.IDebugger = debug("App:Acronym-Dao");
 
@@ -31,6 +32,23 @@ class AcronymDao {
     this.schemaPlugin
   ) as MongooseFuzzyModel<IAcronym>;
 
+  bulkWriteAcronym() {
+    return this.Acronym.bulkWrite(
+      acronym.map((acr) => ({
+        updateOne: {
+          filter: { _id: acr._id },
+          update: { $set: acr },
+          upsert: true,
+        },
+      }))
+    ).then((res) => {
+      if (res) {
+        log("bulk acronyms with definitions added");
+      } else {
+        log("bulk create was unsuccessful");
+      }
+    });
+  }
   async createAcronym(acronymDetails: AcronymDto) {
     const acronymId = shortId.generate();
     const res = new this.Acronym({
@@ -45,17 +63,24 @@ class AcronymDao {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
   }
   async getAcronyms(from: string, limit: string, search: string) {
-    const regex = new RegExp(this.escapeRegex(search), "gi");
-    return await this.Acronym.find({ acronym: regex })
-      .limit(parseInt(limit))
-      .skip(parseInt(from))
-      .exec();
+    if (!search) {
+      return await this.Acronym.find()
+        .limit(parseInt(limit))
+        .skip(parseInt(from))
+        .exec();
+    } else {
+      const regex = new RegExp(this.escapeRegex(search), "gi");
+      return await this.Acronym.find({ acronym: regex })
+        .limit(parseInt(limit))
+        .skip(parseInt(from))
+        .exec();
+    }
   }
 
   getAnAcronym(acronym: string) {
     return this.Acronym.findOne({ acronym: acronym }).exec();
   }
-   putAnAcronym(acronym: string, acronymDetails: AcronymDto) {
+  putAnAcronym(acronym: string, acronymDetails: AcronymDto) {
     return this.Acronym.findOneAndUpdate(
       { acronym: acronym },
       { $set: acronymDetails },
@@ -64,7 +89,7 @@ class AcronymDao {
   }
 
   removeAnAcronym(acronym: string) {
-   return this.Acronym.findOneAndDelete({ acronym: acronym }).exec();
+    return this.Acronym.findOneAndDelete({ acronym: acronym }).exec();
   }
 }
 
