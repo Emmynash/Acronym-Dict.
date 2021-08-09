@@ -26,7 +26,7 @@ class AcronymMiddleware {
             else {
                 return res
                     .status(400)
-                    .send({ error: "Acronym and definition are required strings" });
+                    .send({ error: "Acronym and definition strings are required" });
             }
         });
     }
