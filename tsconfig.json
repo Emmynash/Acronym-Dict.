@@ -6,7 +6,9 @@
     "strict": true,
     "esModuleInterop": true,
     "inlineSourceMap": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
   },
   "typeRoots": [
     "./typings",
