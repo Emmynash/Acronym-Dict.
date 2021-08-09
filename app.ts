@@ -8,6 +8,9 @@ import cors from "cors";
 import helmet from "helmet";
 import { CommonRouteConfig } from "./src/common/common.route.config";
 import { AcronymRoutes } from "./src/acronym/acronym.route.config";
+import acronymDao from "./src/acronym/dao/acronym.dao";
+
+acronymDao.bulkWriteAcronym();
 
 const app: express.Application = express();
 const log: debug.IDebugger = debug("app");
