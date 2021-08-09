@@ -12,13 +12,13 @@ class AcronymMiddleware {
       req.body.acronym &&
       req.body.definition &&
       body(req.body.acronym).isString() &&
-      body(req.body.definition).isString() 
+      body(req.body.definition).isString()
     ) {
       return next();
     } else {
       return res
         .status(400)
-        .send({ error: "Acronym and definition are required strings" });
+        .send({ error: "Acronym and definition strings are required" });
     }
   }
   async validateAcronymExist(
