@@ -27,10 +27,7 @@ export class AcronymRoutes extends CommonRouteConfig {
       );
     this.app
       .route("/acronym/:acronym")
-      .put(
-        AcronymMiddleware.validateBodyFields,
-        AcronymController.putAcronym
-      );
+      .put(AcronymMiddleware.validateBodyFields, AcronymController.putAcronym);
     this.app.route("/acronym/:acronym").delete(AcronymController.removeAcronym);
 
     return this.app;
