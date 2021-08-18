@@ -6,7 +6,7 @@ import mongooseFuzzySearching, {
   MongooseFuzzyModel,
 } from "mongoose-fuzzy-searching";
 import { IAcronym } from "../../common/interfaces/acronym.interface";
-import { acronym } from "../../../seed/data/01-acronym/acronym";
+import { acronym } from "../../../seed/acronym/acronym";
 
 const log: debug.IDebugger = debug("App:Acronym-Dao");
 
