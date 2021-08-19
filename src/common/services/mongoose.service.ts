@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 import debug from "debug";
-import { Seeder } from "mongo-seeding";
-import path from "path";
 
 const log: debug.IDebugger = debug("App:Mongoose-Service");
 
@@ -24,6 +22,9 @@ class MongooseService {
 
   connectWithRetry = async () => {
     let dbUrl: any = process.env.MONGO_DOCKER_URI;
+    if (typeof global.it === "function") {
+      dbUrl = process.env.MONGO_LOCAL_URI;
+    }
 
     log("Attempting MongoDB connection (will retry if needed)");
     mongoose.Promise = global.Promise;
