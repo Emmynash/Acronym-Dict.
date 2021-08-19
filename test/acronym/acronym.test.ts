@@ -4,11 +4,10 @@ import supertest from "supertest";
 import mongoose from "mongoose";
 
 let accessToken = "";
-let refreshToken = "";
 let acronym = "";
 const acronymDetails = {
-  acronym: "LOB",
-  definition: "Laugh Out Bad",
+  acronym: "LOC",
+  definition: "Laugh Out Clean",
 };
 describe("acronym endpoints", function () {
   let request: supertest.SuperAgentTest;
@@ -22,7 +21,6 @@ describe("acronym endpoints", function () {
     expect(res.body).to.be.an("object");
     expect(res.body.accessToken).to.be.a("string");
     accessToken = res.body.accessToken;
-    refreshToken = res.body.refreshToken;
     acronym = res.body.acronym.acronym;
   });
   it("should allow a fuzzy search to /acronym?from=0&limit=10&search=:search", async function () {
@@ -52,7 +50,7 @@ describe("acronym endpoints", function () {
       const res = await request
         .put(`/acronym/${acronym}`)
         .set({ Authorization: `Bearer token` })
-        .send({ acronym: "LOC", definition: "Love You Hoads" });
+        .send({ acronym: "LOC", definition: "Love You Loads" });
       expect(res.status).to.be.equal(403);
       expect(res.body).to.be.empty;
     });
