@@ -10,8 +10,6 @@ import { CommonRouteConfig } from "./src/common/common.route.config";
 import { AcronymRoutes } from "./src/acronym/acronym.route.config";
 import acronymDao from "./src/acronym/dao/acronym.dao";
 
-acronymDao.bulkWriteAcronym();
-
 const app: express.Application = express();
 const log: debug.IDebugger = debug("app");
 const server: http.Server = http.createServer(app);
@@ -48,6 +46,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
   res.status(200).send(runningMsg);
 });
 
+acronymDao.bulkWriteAcronym();
 export default server.listen(port, () => {
   routes.forEach((route: CommonRouteConfig) => {
     log(`Route configure for ${route.getName()}`);
