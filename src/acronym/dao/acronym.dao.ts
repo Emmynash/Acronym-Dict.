@@ -33,22 +33,27 @@ class AcronymDao {
   ) as MongooseFuzzyModel<IAcronym>;
 
   bulkWriteAcronym() {
-    return this.Acronym.bulkWrite(
-      acronym.map((acr) => ({
-        updateOne: {
-          filter: { _id: acr._id },
-          update: { $set: acr },
-          upsert: true,
-        },
-      }))
-    ).then((res) => {
-      if (res) {
-        log("bulk acronyms with definitions added");
-      } else {
-        log("bulk create was unsuccessful");
-      }
-    });
+    if (typeof global.it !== "function") {
+      return this.Acronym.bulkWrite(
+        acronym.map((acr) => ({
+          updateOne: {
+            filter: { _id: acr._id },
+            update: { $set: acr },
+            upsert: true,
+          },
+        }))
+      ).then((res) => {
+        if (res) {
+          log("bulk acronyms with definitions added");
+        } else {
+          log("bulk create was unsuccessful");
+        }
+      });
+    } else {
+      return null;
+    }
   }
+
   async createAcronym(acronymDetails: AcronymDto) {
     const acronymId = shortId.generate();
     const res = new this.Acronym({
