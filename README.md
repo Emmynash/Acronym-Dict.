@@ -1,7 +1,7 @@
 # Acronym Dictionary
 
-| method                                                                   | resource                                   description                                                    |
-| :----------------------------------------------------------------------- | :---------------------------------------- |:------------------------------------------------------------- |
+| method                                                                   | resource                                  | description                                                    |
+| :----------------------------------------------------------------------- | :---------------------------------------- | :------------------------------------------------------------- |
 | `GET`                                                                    | `/`                                       | Simple running message response                                |
 | `GET`                                                                    | `/acronym?from=0&limit=10&search=:search` | returns a collection of fuzzy search acronyms                  |
 | `POST`                                                                   | `/acronym`                                | creates an acronym (obj acronym to be includued request body)  |
